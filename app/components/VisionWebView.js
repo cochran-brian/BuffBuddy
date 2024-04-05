@@ -6,12 +6,11 @@ import WebView from "react-native-webview";
 const API_KEY =  "e9b5bed4-b7d4-4dbc-8ba1-f14f2fda7bcc"
 const POSETRACKER_API = "https://www.posetracker.com/pose_tracker/tracking"
 
-export default function VisionWebView({ exercise, difficulty }) {
-  const [poseTrackerInfos, setCurrentPoseTrackerInfos] = useState()
-  const [repsCounter, setRepsCounter] = useState(0)
+export default function VisionWebView({ exercise, difficulty, setRepsCounter, setCurrentPoseTrackerInfos }) {
+ 
   
   // Our API request the width and height wanted for display the webcam inside the webview
-  const width = Dimensions.get('screen').width
+  const width = 350
   const height = 350
   
   // You can request API to display user skeleton or not (by default it's set to true)
@@ -49,7 +48,7 @@ export default function VisionWebView({ exercise, difficulty }) {
   
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1}}>
+      <View style={{flex: 1}}>
         <WebView
         javaScriptEnabled={true}
         domStorageEnabled={true}
@@ -81,9 +80,9 @@ export default function VisionWebView({ exercise, difficulty }) {
             <Text>Placement info : You can start doing squats 🏋️</Text>
           </>
         )}
-        { repsCounter > 0 && (
+        {/* { repsCounter > 0 && (
           <Text>Counter: {repsCounter}</Text>
-        )}
+        )} */}
       </View>
     </View>
   );

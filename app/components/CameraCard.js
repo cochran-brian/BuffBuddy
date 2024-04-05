@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     width: '100%',
-    height: 250,
+    height: Dimensions.get("screen").height * .3,
     // borderRadius: 50,
   },
   leftContainer: {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
     height: 50,
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 45

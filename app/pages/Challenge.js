@@ -7,12 +7,21 @@ export default function Challenge({ route, navigation }) {
 
   const {name, time} = route.params
 
-  return (
-   <View style={styles.container}>
-      <VisionWebView exercise="squat" difficulty="easy" />
-      <CameraCard initialTime={time} endChallenge={() => navigation.navigate("End", {name: name, reps: 32})} />
-   </View>
-  );
+  const [poseTrackerInfos, setCurrentPoseTrackerInfos] = useState()
+  const [repsCounter, setRepsCounter] = useState(0)
+
+    {
+      !poseTrackerInfos ? 
+      (
+        <Text>Loading...</Text>
+      ) : 
+      (
+        <View style={styles.container}>
+          <VisionWebView exercise="squat" difficulty="easy" setRepsCounter={setRepsCounter} setCurrentPoseTrackerInfos={setCurrentPoseTrackerInfos} />
+          <CameraCard initialTime={time} endChallenge={() => navigation.navigate("End", {name: name, reps: repsCounter})} />
+        </View>
+      )
+    }
 }
 
 const styles = StyleSheet.create({
