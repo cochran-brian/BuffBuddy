@@ -16,7 +16,6 @@ export default function Login({ navigation }) {
     catch(error) {
       console.error(error)
     }
-
   }
 
   return (
@@ -32,7 +31,7 @@ export default function Login({ navigation }) {
 
         <View style={{alignItems: 'center'}}>
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light"}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light"}}
             placeholder={"Email"}
             autoCapitalize='none'
             keyboardType={'email-address'}
@@ -40,7 +39,7 @@ export default function Login({ navigation }) {
             value={email} />
 
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
             placeholder={"Password"}
             autoCapitalize='none'
             secureTextEntry={true}
@@ -103,8 +102,9 @@ const styles = StyleSheet.create({
   },
   header:{
     color: 'black',
-    fontFamily: 'Lexend SemiBold',
+    // fontFamily: 'Lexend SemiBold',
     fontSize: 50,
+    fontWeight: 'bold',
     alignSelf: 'center'
   },
   lightText:{
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
   },  
   bottomButton:{
     width: 300,
-    height: 60,
-    borderRadius: 50,
+    height: 50,
+    borderRadius: 20,
     marginTop: 10,
     backgroundColor: 'black',
     alignItems: 'center',

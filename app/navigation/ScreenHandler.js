@@ -9,6 +9,8 @@ import leaderboard from '../pages/Leaderboard.js'
 import Login from '../pages/Login.js'
 import Register from '../pages/Register.js'
 import Start from '../pages/Start.js'
+import Profile from '../pages/Profile.js'
+import HomeTabs from '../navigation/HomeTabs.js'
 import { auth } from '../firebase/config.js'
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -19,18 +21,17 @@ export default function ScreenHandler() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     onAuthStateChanged(auth, async (user) => {
-        console.log("auth change")
+        console.log(auth.currentUser)
         setIsAuthenticated(!!user);
     });
 
     return(
     <NavigationContainer>
      <Stack.Navigator>
-        {auth.currentUser ?
-        <>
+        {auth.currentUser ? <>
             <Stack.Screen
-                name="Home"
-                component={Home}
+                name="HomeTabs"
+                component={HomeTabs}
                 options={{headerShown: false}}
             /> 
             <Stack.Screen
@@ -44,18 +45,11 @@ export default function ScreenHandler() {
                 options={{headerShown: false}}
             />
             <Stack.Screen
-                name="Leaderboard"
-                component={leaderboard}
-                options={{headerShown: false}}
-            />
-            <Stack.Screen
                 name="Start"
                 component={Start}
                 options={{headerShown: false}}
             />
-        </>
-        :
-        <>
+        </> : <>
             <Stack.Screen
                 name="Login"
                 component={Login}
@@ -66,8 +60,7 @@ export default function ScreenHandler() {
                 component={Register}
                 options={{headerShown: false}}
             />
-        </>  
-        }
+        </>}
      </Stack.Navigator>
     </NavigationContainer>
     )

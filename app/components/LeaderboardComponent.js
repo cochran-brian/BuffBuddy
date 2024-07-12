@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState} from 'react';
 import { useFonts } from 'expo-font';
 import { StyleSheet, View, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback, Pressable } from 'react-native';
 
-export default function FilterCard({ username, reps }) {
+export default function LeaderboardComponent({ username, reps }) {
 
  return (
   <View style={styles.container}>
@@ -14,7 +14,7 @@ export default function FilterCard({ username, reps }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 40,
+    borderRadius: 30,
     width: 350,
     height: 80,
     borderColor: 'black',

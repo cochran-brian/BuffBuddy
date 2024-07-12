@@ -1,17 +1,24 @@
-import { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { useState, useEffect } from 'react';
+import { FlatList, StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { Image } from 'expo-image'
+import { LinearGradient } from 'expo-linear-gradient';
 import FilterCard from '../components/FilterCard';
 import ChallengeCard from '../components/ChallengeCard'
+import { db, auth } from '../firebase/config';
+import { getDocs, collection, query, orderBy, limit, updateDoc, doc, getDoc } from 'firebase/firestore';
 
 
 export default function Home({ navigation }) {
 
+  const [picture, setPicture] = useState(null)
+
 const challenges = [
-    { id: 1, name: 'Pushup', time: 1, type: "Upper Body", associatedColor: "#D6CDC0" },
-    { id: 2, name: 'Situp', time: 3, type: "Core", associatedColor: "#E7FBBC" },
-    { id: 3, name: 'Plank', time: '∞', type: "Core", associatedColor: "#E7FBBC" },
-    { id: 4, name: 'Squat', time: 2, type: "Lower Body", associatedColor: "#F0C7FF" },
-    { id: 5, name: 'Jumping Jack', time: 2, type: "Cardio", associatedColor: "#C0C2D6" },
+    { id: 1, name: 'Pushup', exercise: "pushup", time: 0.5, timeMeasure: 'mins', type: "Upper Body", associatedColor: "#D6CDC0" },
+    { id: 2, name: 'Plank', exercise: "face_plank", time: '∞', timeMeasure: 'secs', type: "Core", associatedColor: "#E7FBBC" },
+    { id: 3, name: 'Lunge', exercise: "lunge", time: 1, timeMeasure: 'mins', type: "Lower Body", associatedColor: "#F0C7FF" },
+    { id: 4, name: 'Squat', exercise: "squat", time: 1, timeMeasure: 'mins', type: "Lower Body", associatedColor: "#F0C7FF" },
+    { id: 5, name: 'Left Leg Balance', exercise: "balance_leg_left", time: '∞', timeMeasure: 'secs', type: "Balance", associatedColor: "#C0C2D6" },
+    { id: 6, name: 'Right Leg Balance', exercise: "balance_leg_right", time: '∞', timeMeasure: 'secs', type: "Balance", associatedColor: "#C0C2D6" },
   ]
 
   const [filteredChallenges, setFilteredChallenges] = useState(challenges);
@@ -20,8 +27,19 @@ const challenges = [
     { id: 1, name: 'Upper Body', selected: false, associatedColor: "#D6CDC0" },
     { id: 2, name: 'Lower Body', selected: false, associatedColor: "#F0C7FF" },
     { id: 3, name: 'Core', selected: false, associatedColor: "#E7FBBC" },
-    { id: 4, name: 'Cardio', selected: false, associatedColor: "#C0C2D6" },
+    { id: 4, name: 'Balance', selected: false, associatedColor: "#C0C2D6" },
   ])
+
+  useEffect(() => {
+    const handleData = async () => {
+      const userDoc = doc(db, 'users', auth.currentUser.uid);
+      const userQuerySnapshot = await getDoc(userDoc);
+      const userData = userQuerySnapshot.data();
+      setPicture(userData.profileImage)
+    }
+
+    handleData();
+  }, [])
 
   const onFilterClick = (item) => {
     let updatedState = filters.map((filterItem) => {
@@ -58,11 +76,16 @@ const challenges = [
           <Text style={[styles.header, {marginLeft: 20}]}>Challenge</Text>
           <Text style={[styles.header, {fontFamily: 'Lexend SemiBold', marginTop: -10, marginLeft: 20}]}>yourself.</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>  
-          <Image 
-            style={{marginRight: 20}} 
-            source={{uri: 'https://www.asiamediajournal.com/wp-content/uploads/2022/11/Default-PFP.jpg'}}></Image> 
-        </TouchableWithoutFeedback>
+        <View style={{width: 'auto', height: 'auto', marginRight: 20, alignItems: 'center', justifyContent: 'center'}}>
+          {/* <TouchableWithoutFeedback onPress={() => navigation.navigate('Profile')}>  
+            <View style={{backgroundColor: '#D6D6D6', width: 75, height: 75, borderRadius: '100%'}}></View>
+          </TouchableWithoutFeedback> */}
+
+          {picture ? 
+                <Image source={{ uri: picture }} cachePolicy='memory-disk' style={{width: 80, height: 80, borderRadius: 40}} />
+                : <View style={{backgroundColor: '#D6D6D6', width: 80, height: 80, borderRadius: 40}}></View>
+            }
+        </View>
       </View>
       <View style={{height: 40, marginTop: 5, marginBottom: 5}}>
         <FlatList 
@@ -82,15 +105,18 @@ const challenges = [
       <View>
         <FlatList contentContainerStyle={{paddingBottom: 200}} data={filteredChallenges} showsVerticalScrollIndicator={false} renderItem={({item}) => {
           return <ChallengeCard 
-                    name={item.name + " challenge"} 
+                    name={item.name + " Challenge"} 
+                    exercise={item.exercise}
                     time={item.time} 
                     backgroundColor={item.associatedColor} 
                     navHome={() => navigation.navigate('Start', {
-                      name: item.name, 
+                      name: item.name,
+                      exercise: item.exercise, 
                       time: item.time
                     })}
                     navLeaderboard={() => navigation.navigate("Leaderboard", {
-                      name: item.name
+                      name: item.name,
+                      exercise: item.exercise
                     })}/>
         }}/>
       </View>
@@ -104,14 +130,14 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'start',
-      paddingTop: 70
+      paddingTop: 60
     },
     scrollView: {
       marginTop: 10,
       backgroundColor: 'red',
     }, 
     header: {
-      fontSize: 48,
+      fontSize: 46,
       fontFamily: 'Lexend Light',
       alignSelf: 'flex-start'
     },

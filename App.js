@@ -1,6 +1,7 @@
 import { StyleSheet, Text } from 'react-native';
 import { useFonts } from 'expo-font';
 import ScreenHandler from './app/navigation/ScreenHandler';
+import 'react-native-reanimated';
 
 export default function App() {
 

@@ -1,10 +1,34 @@
 import React, { useEffect, useRef, useState} from 'react';
 import { useFonts } from 'expo-font';
-import { StyleSheet, View, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback, Pressable, ActivityIndicator } from 'react-native'
+import { MaterialIndicator, BallIndicator, DotIndicator, BarIndicator } from 'react-native-indicators';
+import { getDocs, collection, query, orderBy, limit } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
-export default function FilterCard({ name, time, backgroundColor, navHome, navLeaderboard }) {
 
-    // 0 is temporarily hard-coded
+export default function ChallengeCard({ name, exercise, time, backgroundColor, navHome, navLeaderboard }) {
+
+  const [record, setRecord] = useState(null);
+
+  useEffect(() => {
+    const handleData = async () => {
+      const leaderboardRef = collection(db, 'challenges', exercise, 'leaderboard');
+      const q = query(leaderboardRef, orderBy("reps", "desc"), limit(1));
+      const querySnapshot = await getDocs(q);
+      var rankings = [];
+      querySnapshot.forEach((doc) => {
+        rankings.push(doc.data())
+      })
+      if(rankings.length > 0) {
+        console.log(rankings)
+        setRecord(rankings[0].reps)
+       } else {
+        setRecord("0");
+       } 
+    }
+
+    handleData();
+  }, [])
 
  return (
   <TouchableWithoutFeedback onPress={navHome}>
@@ -15,7 +39,7 @@ export default function FilterCard({ name, time, backgroundColor, navHome, navLe
       </View>
       <View style={styles.rightContainer}>
           <View style={{alignItems: 'center', width: '60%'}}>
-              <Text style={{fontSize: 48, fontFamily: 'Lexend Light'}}>0</Text> 
+              {record ? <Text style={{fontFamily: "Lexend Light", fontSize: 48, maxHeight: 65}}>{record}</Text> : <View style={{maxHeight: 65}}><MaterialIndicator color='black' /></View>}
               <Text style={{fontSize: 11, fontFamily: 'Lexend Light', color: "#00000066"}}>Record</Text>
           </View>
           <Pressable onPress={navLeaderboard}><Text style={{color: "#00000066", fontFamily: 'Lexend Light', textDecorationLine: 'underline'}}>See leaderboard</Text></Pressable>
@@ -54,7 +78,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   text: {
-    fontSize: 36,
+    fontSize: 30,
     fontFamily: 'Lexend Light',
     width: 165,
   }

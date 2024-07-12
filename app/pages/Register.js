@@ -21,7 +21,9 @@ export default function Register({ navigation }) {
         lastName: lastName,
         email: email,
         userName: username,
-        uid: userCredential.user.uid
+        uid: userCredential.user.uid,
+        profileImage: null,
+        completedChallenges: 0
       })
     }
     catch(error) {
@@ -43,7 +45,7 @@ export default function Register({ navigation }) {
 
         <View style={{alignItems: 'center'}}>
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light"}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light"}}
             placeholder={"Email"}
             autoCapitalize='none'
             keyboardType={'email-address'}
@@ -51,7 +53,7 @@ export default function Register({ navigation }) {
             value={email} />
 
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
             placeholder={"Password"}
             autoCapitalize='none'
             secureTextEntry={true}
@@ -59,21 +61,21 @@ export default function Register({ navigation }) {
             value={password} />
 
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
             placeholder={"First name"}
             secureTextEntry={false}
             onChangeText={(input) => setFirstName(input)} 
             value={firstName} />
 
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
             placeholder={"Last name"}
             secureTextEntry={false}
             onChangeText={(input) => setLastName(input)} 
             value={lastName} />
 
           <TextInput 
-            style={{width: 300, height: 60, borderRadius: 50, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
+            style={{width: 300, height: 50, borderRadius: 20, borderColor: 'black', borderWidth: 1.5, padding: 15, fontSize: 16, fontFamily: "Lexend Light", marginTop: 10}}
             placeholder={"Username"}
             autoCapitalize='none'
             secureTextEntry={false}
@@ -147,8 +149,8 @@ const styles = StyleSheet.create({
   },  
   bottomButton:{
     width: 300,
-    height: 60,
-    borderRadius: 50,
+    height: 50,
+    borderRadius: 20,
     marginTop: 10,
     backgroundColor: 'black',
     alignItems: 'center',
